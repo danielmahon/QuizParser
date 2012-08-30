@@ -1,0 +1,8 @@
+{
+    "name": "QuizParser"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "lazy": "1.x"
+  }
+}

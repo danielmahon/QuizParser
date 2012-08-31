@@ -10,7 +10,7 @@ A simple parser built to convert MoxQuizz formatted text files into a mongodb st
 
 (The MIT License)
 
-Copyright (c) 2012 Daniel Mahon <daniel@mahonstudios.com>
+Copyright (c) 2012 Daniel Mahon &lt;daniel@mahonstudios.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

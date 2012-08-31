@@ -1,6 +1,6 @@
 # QuizParser
 
-A simple parser built to convert MoxQuizz formatted text files into a mongodb store
+A simple parser built to convert MoxQuizz formatted text files into a mongodb store through mongoose
 
 ## CLI
 

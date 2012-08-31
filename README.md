@@ -6,9 +6,11 @@ A simple parser built to convert MoxQuizz formatted text files into a mongodb st
 
     $ node app.js [FILENAME]
 
-## MIT License
-Copyright 2012 Daniel Mahon and other contributors
-http://mahonstudios.com/
+## License
+
+(The MIT License)
+
+Copyright (c) 2012 Daniel Mahon <daniel@mahonstudios.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

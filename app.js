@@ -8,29 +8,18 @@ if (process.argv.length < 3) {
 	process.exit(1);
 }
 
-// console.log(process);
-
 var fs = require('fs');
 var mongoose = require('mongoose');
 var filename = process.argv[2];
 var Lazy = require('lazy');
-
+var config = require('config');
 var trivia = [];
-
 var temp = {};
 
-var USER = '';
-var PASS = '';
-var HOST = '';
-var DATABASE = '';
-
-var db = mongoose.createConnection('mongodb://'+USER+':'+PASS+'@'+HOST+'/'+DATABASE);
+var db = mongoose.createConnection('mongodb://'+config['MONGO_USER']+':'+config['MONGO_PASS']+'@'+config['MONGO_HOST']+'/'+config['MONGO_DB']);
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-	// yay!
-	console.log('yay');
-
 	var schema = new mongoose.Schema({
 		category: {
 			type: String,

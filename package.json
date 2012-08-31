@@ -3,6 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "lazy": "1.x"
+      "lazy": "1.x",
+      "mongoose": "3.x"
   }
 }

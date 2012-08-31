@@ -4,45 +4,81 @@
 
 // Make sure we got a filename on the command line.
 if (process.argv.length < 3) {
-	console.log('Usage: node ' + process.argv[1] + ' FILENAME');
+	console.log('Usage: node ' + process.argv[1].split('/').reverse()[0] + ' FILENAME');
 	process.exit(1);
 }
 
+// console.log(process);
+
 var fs = require('fs');
+var mongoose = require('mongoose');
 var filename = process.argv[2];
+var Lazy = require('lazy');
 
-var trivia = {};
+var trivia = [];
 
-// Read the file and print its contents.
-function readLines(input, func) {
-	var remaining = '';
+var temp = {};
 
-	input.on('data', function(data) {
-		remaining += data;
-		console.log(remaining + ' END');
-		var index = remaining.indexOf('\n');
-		var last = 0;
-		while (index > -1) {
-			var line = remaining.substring(last, index);
-			console.log(line + ' END');
-			last = index + 1;
-			func(line);
-			index = remaining.indexOf('\n', last);
+var USER = '';
+var PASS = '';
+var HOST = '';
+var DATABASE = '';
+
+var db = mongoose.createConnection('mongodb://'+USER+':'+PASS+'@'+HOST+'/'+DATABASE);
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+	// yay!
+	console.log('yay');
+
+	var schema = new mongoose.Schema({
+		category: {
+			type: String,
+			trim: true
+		},
+		question: {
+			type: String,
+			trim: true
+		},
+		answer: {
+			type: String,
+			trim: true
+		},
+		dateCreated: {
+			type: Date,
+			'default': Date.now()
 		}
+	});
 
-		remaining = remaining.substring(last);
+	var Question = db.model('Question', schema)
+
+	// Read the file and print its contents.
+	var input = fs.createReadStream(filename);
+
+	var lazy = new Lazy(input).lines.map(String).skip(45).forEach(function(line, index) {
+		var str = line.trim().match(/(\w*):\s*(.*)/);
+
+		if (str) {
+			var key = str[1].toLowerCase();
+			var value = str[2];
+
+			temp[key] = value;
+
+			if (key == 'answer') {
+				trivia.push(temp);
+				Question.create(temp, function(err) {
+					if (err)
+						throw err;
+				});
+				// clear temp after answer
+				temp = {};
+			}
+		}
 	});
 
 	input.on('end', function() {
-		if (remaining.length > 0) {
-			func(remaining);
-		}
+		// console.log(trivia);
+		// process.exit();
 	});
-}
 
-function func(data) {
-	// console.log('Line: ' + data);
-}
-
-var input = fs.createReadStream(filename);
-readLines(input, func); 
+});
